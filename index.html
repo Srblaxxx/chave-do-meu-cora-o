@@ -577,16 +577,16 @@
     
     const startDateStr = startDate.toLocaleDateString('pt-BR');
     
-    // ========== PLAYER DE MÚSICA ==========
+    // ========== PLAYER DE MÚSICA (usando arquivo local lovelove.mp3) ==========
     class MusicPlayer {
         constructor() {
             this.audio = new Audio();
-            this.audio.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+            this.audio.src = 'lovelove.mp3';
             this.audio.volume = 0.5;
             this.isPlaying = false;
             this.currentSongIndex = 0;
             this.playlist = [
-                { title: 'Love', artist: 'Keyshia Cole', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' }
+                { title: 'Love', artist: 'Keyshia Cole', url: 'lovelove.mp3' }
             ];
             this.initElements();
             this.initEvents();
@@ -618,6 +618,11 @@
             this.audio.addEventListener('canplay', () => {
                 if(this.isPlaying) this.audio.play();
             });
+            this.audio.addEventListener('error', (e) => {
+                console.error('Erro ao carregar música:', e);
+                this.musicTitle.textContent = 'Música não encontrada';
+                this.musicArtist.textContent = 'Coloque o arquivo lovelove.mp3 na mesma pasta';
+            });
         }
 
         loadSong() {
@@ -637,7 +642,7 @@
                 this.playPauseBtn.textContent = '▶️';
             } else {
                 this.audio.play().catch(e => {
-                    alert('Clique em algum lugar da página primeiro para ativar o áudio!');
+                    alert('Clique em algum lugar da página primeiro para ativar o áudio! Verifique se o arquivo lovelove.mp3 está na mesma pasta do site.');
                 });
                 this.playPauseBtn.textContent = '⏸️';
             }
